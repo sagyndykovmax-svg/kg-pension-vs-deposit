@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Соцфонд/ГНПФ или банковский депозит: сравнение способов накопления на пенсию в Кыргызстане, 2026.">
+<title>Соцфонд или депозит</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: research ledger — sticky contents rail on the left, one reading column, wide tables scroll in place.
+   Two money colours run through the whole page: green = ГНПФ / Соцфонд, gold = депозит. */
+:root {
+  --paper: #f3f6f4;
+  --surface: #ffffff;
+  --ink: #142b25;
+  --muted: #586b64;
+  --line: #d6dfda;
+  --accent: #1d6b57;
+  --accent-soft: #e2efe9;
+  --gold: #a96e12;
+  --gold-soft: #f6ecd9;
+  --interp: #3c5a8c;
+  --interp-soft: #e5ebf5;
+  --warn: #b0451c;
+  --warn-soft: #f8e6dd;
+  --font-display: "Unbounded", "Golos Text", system-ui, sans-serif;
+  --font-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: 2.125rem;
+  --step-4: clamp(2.25rem, 5vw, 3.5rem);
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1613; --surface: #15201c; --ink: #e2ebe6; --muted: #92a59d; --line: #2a3a33;
+    --accent: #5cc4a2; --accent-soft: #17332a; --gold: #e2b55c; --gold-soft: #33280f;
+    --interp: #93acdc; --interp-soft: #1c2638; --warn: #f0906a; --warn-soft: #3a2017;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1613; --surface: #15201c; --ink: #e2ebe6; --muted: #92a59d; --line: #2a3a33;
+  --accent: #5cc4a2; --accent-soft: #17332a; --gold: #e2b55c; --gold-soft: #33280f;
+  --interp: #93acdc; --interp-soft: #1c2638; --warn: #f0906a; --warn-soft: #3a2017;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  margin: 0;
+  padding-inline: 16px;
+  padding-block: 0 64px;
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.2; margin: 0; }
+h2 { font-family: var(--font-display); font-weight: 500; font-size: var(--step-2); letter-spacing: -0.01em; }
+h3 { font-size: var(--step-1); font-weight: 600; }
+p { margin: 0; }
+.num, td.n, .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* ---------- shell ---------- */
+.shell { max-width: 1180px; margin-inline: auto; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px; }
+.rail { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; padding-block: 40px; }
+.rail .eyebrow { margin-bottom: 12px; }
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: s; }
+.rail a { display: grid; grid-template-columns: 26px 1fr; padding: 5px 8px; border-radius: 6px; color: var(--muted); text-decoration: none; font-size: var(--step--1); line-height: 1.35; }
+.rail a span { font-family: var(--font-mono); color: var(--muted); opacity: .7; }
+.rail a:hover { background: var(--accent-soft); color: var(--ink); }
+.main { min-width: 0; display: grid; gap: 72px; padding-block: 40px; }
+.col { max-width: 760px; display: grid; gap: 18px; min-width: 0; }
+.eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.lead { font-size: var(--step-1); color: var(--muted); max-width: 62ch; }
+section { scroll-margin-top: 24px; }
+.sec-head { display: grid; gap: 8px; }
+.sec-head .eyebrow span { color: var(--accent); }
+
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rail { position: static; padding-block: 24px 0; }
+  .rail ol { display: flex; overflow-x: auto; gap: 6px; padding-bottom: 6px; scrollbar-width: thin; }
+  .rail a { display: flex; gap: 6px; white-space: nowrap; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
+  .main { padding-block: 24px; gap: 56px; }
+}
+
+/* ---------- hero ---------- */
+.hero { display: grid; gap: 22px; padding-top: 8px; }
+.hero h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-4); letter-spacing: -0.03em; }
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero h1 b { font-weight: 700; color: var(--accent); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: var(--step--1); color: var(--muted); }
+.meta strong { color: var(--ink); font-weight: 600; }
+
+/* salary flow — the page's signature visual */
+.flow { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: grid; gap: 16px; }
+.flow-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; align-items: baseline; }
+.flow-top h3 { font-size: var(--step-0); }
+.seg-tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; flex-wrap: nowrap; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.seg-tabs button { white-space: nowrap; flex: 0 0 auto; font: inherit; font-size: var(--step--1); border: 0; background: transparent; color: var(--muted); padding: 4px 12px; border-radius: 999px; cursor: pointer; }
+.seg-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.bar { display: flex; height: 54px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.bar > div { display: grid; place-items: center; font-size: 0.72rem; font-weight: 600; white-space: nowrap; overflow: hidden; min-width: 0; }
+.b-net { background: var(--paper); color: var(--muted); }
+.b-sol { background: var(--interp-soft); color: var(--interp); }
+.b-gnpf { background: var(--accent); color: var(--surface); }
+.b-emp { background: repeating-linear-gradient(45deg, var(--line) 0 6px, transparent 6px 12px); color: var(--muted); }
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.legend div { display: grid; grid-template-columns: 12px 1fr; gap: 4px 10px; align-items: start; font-size: var(--step--1); color: var(--muted); }
+.legend i { width: 12px; height: 12px; border-radius: 3px; margin-top: 4px; }
+.legend b { display: block; color: var(--ink); font-family: var(--font-mono); font-weight: 500; font-size: var(--step-0); }
+
+/* ---------- answer ---------- */
+.answer { display: grid; gap: 0; border-top: 2px solid var(--ink); }
+.answer li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.answer li::before { content: counter(a); counter-increment: a; font-family: var(--font-mono); color: var(--muted); font-size: var(--step--1); padding-top: 3px; }
+.answer { list-style: none; margin: 0; padding: 0; counter-reset: a; }
+
+/* ---------- source tags ---------- */
+.tag { display: inline-block; font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500; line-height: 1; padding: 3px 5px; border-radius: 4px; vertical-align: 2px; white-space: nowrap; }
+.t-d { background: var(--accent-soft); color: var(--accent); }
+.t-r { background: var(--gold-soft); color: var(--gold); }
+.t-i { background: var(--interp-soft); color: var(--interp); }
+.tags-key { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: var(--step--1); color: var(--muted); }
+
+/* ---------- notes ---------- */
+.note { border-radius: var(--radius); padding: 16px 18px; display: grid; gap: 6px; font-size: 0.95rem; }
+.note.warn { background: var(--warn-soft); color: var(--ink); }
+.note.warn strong { color: var(--warn); }
+.note.info { background: var(--interp-soft); }
+.note.plain { border: 1px dashed var(--line); }
+ul.list { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; }
+ul.list li::marker { color: var(--muted); }
+.src { font-size: var(--step--1); color: var(--muted); }
+
+/* ---------- tables ---------- */
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; background: var(--paper); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.n, th.n { text-align: right; white-space: nowrap; }
+td.g { color: var(--accent); }
+td.y { color: var(--gold); }
+td.pos { color: var(--accent); }
+td.empty { color: var(--muted); }
+tr.group td { background: var(--paper); font-weight: 600; font-size: var(--step--1); color: var(--muted); padding-block: 6px; }
+th.hyp, td.hyp { background: repeating-linear-gradient(135deg, var(--warn-soft) 0 8px, transparent 8px 16px); }
+th.hyp { color: var(--warn); }
+.wide table { min-width: 760px; }
+caption { caption-side: bottom; text-align: left; padding: 10px 12px; font-size: var(--step--1); color: var(--muted); }
+
+/* ---------- compare cards ---------- */
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.pair > div { border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 10px; align-content: start; background: var(--surface); }
+.pair h3 { font-size: var(--step-0); display: flex; gap: 8px; align-items: center; }
+.pair h3 i { width: 10px; height: 10px; border-radius: 50%; }
+@media (max-width: 620px) { .pair { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- scenario chips ---------- */
+.scen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.scen > div { padding: 14px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); display: grid; gap: 6px; align-content: start; }
+.scen .k { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; }
+.scen .v { display: flex; gap: 14px; font-family: var(--font-mono); font-size: var(--step-1); }
+.scen .v span:first-child { color: var(--accent); }
+.scen .v span:last-child { color: var(--gold); }
+.scen p { font-size: var(--step--1); color: var(--muted); }
+.scen .base { border-color: var(--ink); }
+@media (max-width: 620px) { .scen { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- calculator ---------- */
+.calc { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: grid; gap: 20px; }
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: var(--step--1); color: var(--muted); }
+.field input[type="number"] { font: inherit; font-family: var(--font-mono); font-size: var(--step-0); width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+.field.g input { border-left: 3px solid var(--accent); }
+.field.y input { border-left: 3px solid var(--gold); }
+.calc-row { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; }
+.check { display: inline-flex; gap: 8px; align-items: center; font-size: var(--step--1); color: var(--muted); cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.out { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.out > div { background: var(--surface); padding: 12px 14px; display: grid; gap: 2px; }
+.out .k { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+.out .v { font-family: var(--font-mono); font-size: var(--step-1); font-variant-numeric: tabular-nums; }
+.out .s { font-size: var(--step--1); color: var(--muted); font-family: var(--font-mono); }
+.out .g .v { color: var(--accent); }
+.out .y .v { color: var(--gold); }
+.chart { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .l-g { stroke: var(--accent); fill: none; stroke-width: 2.5; }
+.chart .l-y { stroke: var(--gold); fill: none; stroke-width: 2.5; }
+.chart .l-c { stroke: var(--muted); fill: none; stroke-width: 1.5; stroke-dasharray: 4 4; }
+.chart .a-y { fill: var(--gold); opacity: .10; }
+.chart .dot-g { fill: var(--accent); }
+.chart .dot-y { fill: var(--gold); }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: var(--step--1); color: var(--muted); }
+.chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.chart-legend i { width: 16px; height: 0; border-top: 2.5px solid; }
+
+/* ---------- verdict ---------- */
+.verdict { display: grid; gap: 0; border-top: 2px solid var(--ink); }
+.verdict > div { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.verdict .q { font-weight: 600; }
+@media (max-width: 620px) { .verdict > div { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+
+/* ---------- strategy bar ---------- */
+.alloc { display: flex; height: 38px; border-radius: 8px; overflow: hidden; }
+.alloc div { display: grid; place-items: center; font-size: 0.75rem; font-weight: 600; color: var(--surface); white-space: nowrap; overflow: hidden; }
+
+/* ---------- qc ---------- */
+.qc { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.qc li { display: grid; grid-template-columns: 24px 1fr; gap: 8px; font-size: 0.95rem; }
+.qc .ok::before { content: "✓"; color: var(--accent); font-weight: 700; }
+.qc .no::before { content: "✕"; color: var(--warn); font-weight: 700; }
+.qc .part::before { content: "~"; color: var(--gold); font-weight: 700; }
+
+.confidence { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+.confidence .big { font-family: var(--font-display); font-size: var(--step-3); color: var(--ink); line-height: 1; }
+.meter { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.meter i { display: block; height: 100%; width: 50%; background: var(--gold); }
+@media (max-width: 520px) { .confidence { grid-template-columns: minmax(0, 1fr); } }
+
+details { border-top: 1px solid var(--line); padding-block: 10px; }
+details summary { cursor: pointer; font-weight: 600; }
+details > div { padding-top: 10px; display: grid; gap: 10px; }
+
+footer.end { color: var(--muted); font-size: var(--step--1); border-top: 1px solid var(--line); padding-top: 18px; display: grid; gap: 6px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="rail" aria-label="Содержание">
+    <div class="eyebrow">Содержание</div>
+    <ol>
+      <li><a href="#answer"><span>—</span>Короткий ответ</a></li>
+      <li><a href="#system"><span>1</span>Как устроена система</a></li>
+      <li><a href="#gnpf"><span>2</span>Доходность ГНПФ</a></li>
+      <li><a href="#deposits"><span>3</span>Депозиты и защита</a></li>
+      <li><a href="#calc"><span>4</span>Калькулятор и сценарии</a></li>
+      <li><a href="#salary"><span>5</span>Зарплата → накопления</a></li>
+      <li><a href="#risks"><span>6</span>Риски</a></li>
+      <li><a href="#strategy"><span>7</span>Комбинированная стратегия</a></li>
+      <li><a href="#verdict"><span>8</span>Итоговый вывод</a></li>
+      <li><a href="#breakeven"><span>9</span>Точка безубыточности</a></li>
+      <li><a href="#quality"><span>10</span>Контроль качества</a></li>
+    </ol>
+  </nav>
+
+  <main class="main">
+    <!-- HERO -->
+    <header class="hero col" style="max-width:880px">
+      <div class="eyebrow">Исследование · Кыргызская Республика · пенсионные накопления</div>
+      <h1><b>Соцфонд</b> или <em>депозит</em>?</h1>
+      <p class="lead">Что выгоднее на горизонте 10–30 лет: пенсионные отчисления через Социальный фонд и ГНПФ или самостоятельные накопления на сомовых депозитах. Сначала разобрано, что обязательно, потом посчитано то, где выбор действительно есть.</p>
+      <div class="meta">
+        <span>Данные на <strong>05.10.2026</strong></span>
+        <span>Валюта: <strong>сом (KGS)</strong></span>
+        <span>Инфляция в расчётах: <strong>7% / год</strong></span>
+        <span>Уверенность: <strong>≈50%</strong></span>
+      </div>
+
+      <div class="flow" aria-label="Куда уходят взносы с зарплаты">
+        <div class="flow-top">
+          <h3>Куда уходит зарплата <span class="num" id="flow-salary">100 000</span> сом</h3>
+          <div class="seg-tabs" role="group" aria-label="Зарплата">
+            <button type="button" data-sal="30000" aria-pressed="false">30 тыс.</button>
+            <button type="button" data-sal="50000" aria-pressed="false">50 тыс.</button>
+            <button type="button" data-sal="100000" aria-pressed="true">100 тыс.</button>
+            <button type="button" data-sal="200000" aria-pressed="false">200 тыс.</button>
+          </div>
+        </div>
+        <div class="bar" aria-hidden="true">
+          <div class="b-net" style="flex:90">на руки до НДФЛ · 90%</div>
+          <div class="b-sol" style="flex:8">8%</div>
+          <div class="b-gnpf" style="flex:2;min-width:28px">2%</div>
+          <div class="b-emp" style="flex:2.25" title="Работодатель, 2,25%"></div>
+        </div>
+        <div class="legend">
+          <div><i style="background:var(--interp-soft);border:1px solid var(--interp)"></i><span><b id="f-sol">8 000</b>Солидарная часть, 8%. Платит текущие пенсии, вам даёт право на пенсию, не капитал</span></div>
+          <div><i style="background:var(--accent)"></i><span><b id="f-gnpf">2 000</b>Накопительная часть, 2%. Ваш личный счёт в ГНПФ, наследуется</span></div>
+          <div><i class="b-emp" style="border:1px solid var(--line)"></i><span><b id="f-emp">2 250</b>Работодатель сверх зарплаты, 2,25% (пониженный тариф). При полном тарифе 17,25%</span></div>
+        </div>
+        <p class="src">Тарифы: Закон КР № 8 от 24.01.2004 в ред. 2024 г.; пониженный тариф 12,25% с 01.08.2024 для большинства частных компаний. Подоходный налог в схеме не показан.</p>
+      </div>
+    </header>
+
+    <!-- SHORT ANSWER -->
+    <section id="answer" class="col">
+      <div class="sec-head">
+        <div class="eyebrow">Короткий ответ</div>
+        <h2>Ваш капитал в системе — только 2% от зарплаты</h2>
+      </div>
+      <ol class="answer">
+        <li><div><strong>От взносов отказаться нельзя.</strong> Наёмный работник отдаёт 10% зарплаты: 8% в солидарную часть и 2% на личный накопительный счёт в ГНПФ. Работодатель платит отдельно, обычно 2,25%.</div></li>
+        <li><div><strong>Капиталом являются только эти 2%.</strong> Остальное — страховой платёж за будущую пожизненную пенсию, а не инвестиция.</div></li>
+        <li><div><strong>Доплатить на свой счёт в ГНПФ, живя в Кыргызстане, судя по всему, нельзя.</strong> Механизма не найдено. Поэтому вопрос сводится к одному: где держать деньги сверх обязательного.</div></li>
+        <li><div><strong>По доходности варианты почти равны.</strong> ГНПФ на 84% вложен в гособлигации, которые физлицо может купить само. Валовая доходность ГНПФ по грубой оценке около 11–12% в 2025 году, сомовые депозиты дают 11–14%. Разница в 1 п.п. за 30 лет меняет итог на 21%, но знак разницы заранее неизвестен.</div></li>
+        <li><div><strong>Решают не проценты</strong>, а ликвидность, наследование, лимит защиты вкладов (1 млн сом на банк), риск изменения законов и валюта.</div></li>
+        <li><div><strong>Рациональная схема при умеренном риске:</strong> обязательный минимум остаётся в системе, личный капитал копится самостоятельно — сомовые депозиты в 3–5 банках, лестница ГКО и небольшая доля в долларах или золоте.</div></li>
+      </ol>
+      <div class="note warn">
+        <strong>Ограничение исследования</strong>
+        <p>Официальные сайты в зоне .kg (sf.gov.kg, nbkr.kg, deposit.kg, cbd.minjust.gov.kg, сайты банков) из среды исследования не открывались. Цифры взяты из поисковой выдачи по указанным адресам: часто без даты, возможно, из устаревшей версии страницы. Ставка, которую ГНПФ зачисляет на личные счета, не найдена ни за один год. Перед решением ключевые цифры нужно сверить вручную.</p>
+      </div>
+      <div class="tags-key">
+        <span><span class="tag t-d">Д</span> данные из источника, не сверены с оригиналом</span>
+        <span><span class="tag t-r">Р</span> расчёт</span>
+        <span><span class="tag t-i">И</span> интерпретация</span>
+      </div>
+    </section>
+
+    <!-- 1 SYSTEM -->
+    <section id="system" class="col">
+      <div class="sec-head">
+        <div class="eyebrow"><span>01</span> · Этап 1</div>
+        <h2>Как устроена пенсионная система</h2>
+      </div>
+      <h3>Тарифы страховых взносов</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Тариф</th><th>Работодатель</th><th>Работник</th><th class="n">Итого</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Пониженный</strong><br><span class="src">с 01.08.2024, большинство частных компаний</span></td><td>2,25%<br><span class="src">ПФ 1%, ФОМС 1%, ФОТ 0,25%</span></td><td>10%<br><span class="src">ПФ 8% + ГНПФ 2%</span></td><td class="n"><strong>12,25%</strong></td></tr>
+            <tr><td><strong>Полный</strong><br><span class="src">бюджет, горнодобыча, энергетика, банки, связь, алкоголь, табак, ГСМ</span></td><td>17,25%<br><span class="src">ПФ 15%, ФОМС 2%, ФОТ 0,25%</span></td><td>10%<br><span class="src">8% + 2%</span></td><td class="n"><strong>27,25%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src"><span class="tag t-d">Д</span> <a href="https://sf.gov.kg/ru/stavki-tarifov-strahovyh-vznosov/" target="_blank" rel="noopener">sf.gov.kg — ставки тарифов</a> · <a href="https://economist.kg/ekonomika/2024/07/24/v-kyrghyzstanie-ofitsialno-snizhieny-stavki-strakhovykh-vznosov/" target="_blank" rel="noopener">economist.kg, 24.07.2024</a> · текст закона в ред. 22.07.2026 — <a href="https://prg.kz/Document/?doc_id=30290271" target="_blank" rel="noopener">prg.kz</a>. Потолок базы с 01.01.2026 — 720 940 сом/мес (<a href="https://knews.kg/2026/04/29/v-kyrgyzstane-s-1-yanvarya-2026-goda-vveden-verhnij-predel-dlya-ischisleniya-strahovyh-vznosov/" target="_blank" rel="noopener">knews.kg, 29.04.2026</a>).</p>
+
+      <h3>Солидарная и накопительная части — разные вещи</h3>
+      <div class="pair">
+        <div>
+          <h3><i style="background:var(--interp)"></i>Солидарная (страховая) · 8%</h3>
+          <ul class="list">
+            <li>Деньги сразу идут на выплату пенсий нынешним пенсионерам.</li>
+            <li>Вы получаете право на пенсию по формуле: базовая часть + страховые части.</li>
+            <li>Не собственность и не наследуется <span class="tag t-i">И</span></li>
+            <li>Базовая часть 3 170 сом; страховые части с 01.10.2026 ×1,20; минимальная пенсия 8 800, средняя 12 898 сом <span class="tag t-d">Д</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3><i style="background:var(--accent)"></i>Накопительная (ГНПФ) · 2%</h3>
+          <ul class="list">
+            <li>Деньги поступают на ваш личный счёт и инвестируются.</li>
+            <li>Вы получаете сумму на счёте и инвестиционный доход.</li>
+            <li>Счёт личный и наследуется <span class="tag t-d">Д</span></li>
+            <li>Порядок наследования и срок выплаты не найдены.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="src"><span class="tag t-d">Д</span> <a href="https://economist.kg/pravo-znat/2026/10/01/pensii-1-oktyabrya-kak-poschitat/" target="_blank" rel="noopener">economist.kg, 01.10.2026</a> · <a href="https://economist.kg/society/2026/09/21/s-1-oktiabria-srednii-razmer-pensii-dostignet-12-8-tysiachi-somov-kabmin/" target="_blank" rel="noopener">economist.kg, 21.09.2026</a>. Минимальный страховой стаж — 6 лет с 01.01.2026, далее +1 год каждые два года, до 20 лет к 2045 году (<a href="https://economist.kg/society/2026/01/28/minimalnyi-trudovoi-stazh-dlia-piensii-v-kr-vyros-do-6-liet/" target="_blank" rel="noopener">economist.kg</a>); у zakon.kg указано 5 лет, взят более свежий источник. Точная формула страховой части за стаж после 1996 года не найдена.</p>
+
+      <h3>Ответы по пунктам</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Вопрос</th><th>Ответ</th><th>Источник</th></tr></thead>
+          <tbody>
+            <tr><td>Отказаться от взносов</td><td>Нельзя: нормы, позволяющей это наёмному работнику, не найдено</td><td><span class="tag t-i">И</span> вывод из отсутствия нормы</td></tr>
+            <tr><td>Перевести 2% в частный НПФ</td><td>Можно, по заявлению в Соцфонд. Работают «НПФ Кыргызстан» и «Дордой Салым». С 2019 года так поступили ≈1 228 человек</td><td><span class="tag t-d">Д</span> <a href="https://www.akchabar.kg/article/pensiya-czklhxodxxanljrp/chastnye-pensionnye-fondy-kak-nakopit-samomu-ne-nadeyas-na-gosudarstvo" target="_blank" rel="noopener">akchabar.kg</a></td></tr>
+            <tr><td>Размер рынка НПФ</td><td>180,2 млн сом активов, 369 вкладчиков (2024)</td><td><span class="tag t-d">Д</span> fsa.gov.kg</td></tr>
+            <tr><td>Добровольная доплата в ГНПФ</td><td class="empty">Не найдено</td><td>—</td></tr>
+            <tr><td>Добровольно для мигрантов</td><td>Можно: 10, 8 или 2% от средней зарплаты, электронный полис с 09.2026 (ПКМ № 500 от 21.07.2026)</td><td><span class="tag t-d">Д</span> <a href="https://economist.kg/biznes/2026/07/26/novye-strahovye-vznosy/" target="_blank" rel="noopener">economist.kg</a></td></tr>
+            <tr><td>Пенсионный возраст</td><td>Мужчины 63, женщины 58</td><td><span class="tag t-d">Д</span> <a href="https://sf.gov.kg/ru/vozrast-vyhoda-na-pensiyu-i-trebuemyj-stazh/" target="_blank" rel="noopener">sf.gov.kg</a></td></tr>
+            <tr><td>Форма выплаты</td><td>Единовременно, если накоплено не больше 30 прожиточных минимумов; иначе срочная или многократная выплата. Срок выплаты не найден</td><td><span class="tag t-d">Д</span> 24.kg</td></tr>
+            <tr><td>Досрочное получение</td><td>Ипотека (от 500 РП), долевое строительство, государственные жилищные программы, лечение тяжёлых болезней, безработица</td><td><span class="tag t-d">Д</span> <a href="https://sf.gov.kg/ru/v-kakih-sluchayah-mozhno-poluchit-pensionnye-nakopleniya/" target="_blank" rel="noopener">sf.gov.kg</a></td></tr>
+            <tr><td>Выезд на ПМЖ</td><td>Накопления можно получить единовременно</td><td><span class="tag t-d">Д</span> 24.kg</td></tr>
+            <tr><td>Масштаб выплат</td><td>7,2 млрд сом ≈247 тыс. человек</td><td><span class="tag t-d">Д</span> <a href="https://economist.kg/society/2026/09/14/sotsfond-pensionnye-nakopleniya-7-2-mlrd/" target="_blank" rel="noopener">economist.kg, 14.09.2026</a></td></tr>
+            <tr><td>Комиссия ГНПФ, начисление дохода</td><td class="empty">Не найдено</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2 GNPF -->
+    <section id="gnpf" class="col">
+      <div class="sec-head">
+        <div class="eyebrow"><span>02</span> · Этап 2</div>
+        <h2>Доходность ГНПФ: известен доход в сомах, но не ставка по счетам</h2>
+      </div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Период</th><th class="n">Доход, млн сом</th><th>Ставки размещения</th><th>Источник</th></tr></thead>
+          <tbody>
+            <tr><td>2024</td><td class="n">5 549,9</td><td>—</td><td><span class="tag t-d">Д</span> <a href="https://sf.gov.kg/ru/soczialnyj-fond-kyrgyzskoj-respubliki-podvel-itogi-2024-goda/" target="_blank" rel="noopener">sf.gov.kg</a></td></tr>
+            <tr><td>2025</td><td class="n">6 734,2</td><td>Гособлигации 12,86–16%, депозиты 12,1–16,5%</td><td><span class="tag t-d">Д</span> <a href="https://economist.kg/ekonomika/2026/01/28/piensionnyie-nakoplieniia-priniesli-6-7-mlrd-somov-kuda-inviestiroval-sotsfond/" target="_blank" rel="noopener">economist.kg, 28.01.2026</a></td></tr>
+            <tr><td>Январь–август 2026</td><td class="n">5 053,6</td><td>Гособлигации 12,86–16%, депозиты 11,3–14,3%</td><td><span class="tag t-d">Д</span> <a href="https://economist.kg/dengi/2026/09/10/sotsfond-gnpf-investitsii-dohod-5-mlrd/" target="_blank" rel="noopener">economist.kg, 10.09.2026</a></td></tr>
+            <tr><td>2014–2023</td><td class="n empty">не найдено</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Портфель ГНПФ на 01.09.2026</h3>
+      <div class="alloc" role="img" aria-label="Гособлигации 83,75%, депозиты 8,69%, акции 6,93%, прочее 0,63%">
+        <div style="flex:83.75;background:var(--accent)">Гособлигации 83,75%</div>
+        <div style="flex:8.69;background:var(--gold)">8,7%</div>
+        <div style="flex:6.93;background:var(--interp)">6,9%</div>
+        <div style="flex:0.63;background:var(--muted)"></div>
+      </div>
+      <div class="chart-legend">
+        <span><i style="border-color:var(--accent)"></i>гособлигации</span>
+        <span><i style="border-color:var(--gold)"></i>депозиты</span>
+        <span><i style="border-color:var(--interp)"></i>акции</span>
+        <span><i style="border-color:var(--muted)"></i>облигации и остатки 0,63%</span>
+      </div>
+      <p class="src"><span class="tag t-d">Д</span> Сумма ≈71,9 млрд сом <span class="tag t-r">Р</span>. Покупка ТЦ «Ала-Арча» примерно за $20 млн по поручению Кабмина — <a href="https://www.tazabek.kg/news:2266496" target="_blank" rel="noopener">tazabek.kg</a>.</p>
+
+      <h3>Доходность и инфляция по годам</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Год</th><th>Ставка на счета</th><th class="n">Инфляция, дек/дек</th><th class="n">Реальная доходность</th></tr></thead>
+          <tbody>
+            <tr><td>2014</td><td class="empty">нет данных</td><td class="n">10,5*</td><td class="n empty">—</td></tr>
+            <tr><td>2015</td><td class="empty">нет данных</td><td class="n">3,4*</td><td class="n empty">—</td></tr>
+            <tr><td>2016</td><td class="empty">нет данных</td><td class="n">−0,5</td><td class="n empty">—</td></tr>
+            <tr><td>2017</td><td class="empty">нет данных</td><td class="n">3,7</td><td class="n empty">—</td></tr>
+            <tr><td>2018</td><td class="empty">нет данных</td><td class="n">0,5</td><td class="n empty">—</td></tr>
+            <tr><td>2019</td><td class="empty">нет данных</td><td class="n">3,1*</td><td class="n empty">—</td></tr>
+            <tr><td>2020</td><td class="empty">нет данных</td><td class="n">9,7</td><td class="n empty">—</td></tr>
+            <tr><td>2021</td><td class="empty">нет данных</td><td class="n">11,2</td><td class="n empty">—</td></tr>
+            <tr><td>2022</td><td class="empty">нет данных</td><td class="n">14,7</td><td class="n empty">—</td></tr>
+            <tr><td>2023</td><td class="empty">нет данных</td><td class="n">7,3</td><td class="n empty">—</td></tr>
+            <tr><td>2024</td><td class="empty">нет данных</td><td class="n">6,3</td><td class="n empty">—</td></tr>
+            <tr><td>2025</td><td>≈11–12% валовая <span class="tag t-r">Р</span><span class="tag t-i">И</span></td><td class="n">9,4</td><td class="n pos">≈ +2%</td></tr>
+            <tr><td>2026, оценка</td><td>≈11% валовая <span class="tag t-r">Р</span><span class="tag t-i">И</span></td><td class="n">≈12 (авг, г/г)</td><td class="n">≈ −1%</td></tr>
+          </tbody>
+        </table>
+        <caption>* слабо подтверждено. Оценка за 2025 год — доход 6,73 млрд, делённый на предполагаемые средние активы 55–60 млрд. Это валовая доходность до комиссии, а не ставка, зачисленная на счёт.</caption>
+      </div>
+      <p class="src"><span class="tag t-r">Р</span> Средняя инфляция 2014–2025 — 6,5% в год, за 2020–2025 — 9,7% в год. Цель НБКР — 5–7%. <span class="tag t-d">Д</span> Прогноз НБКР на конец 2026 — до 15% (<a href="https://kaktus.media/doc/553186" target="_blank" rel="noopener">kaktus.media, 13.09.2026</a>).</p>
+    </section>
+
+    <!-- 3 DEPOSITS -->
+    <section id="deposits" class="col">
+      <div class="sec-head">
+        <div class="eyebrow"><span>03</span> · Этап 3</div>
+        <h2>Сомовые депозиты и защита вкладов</h2>
+      </div>
+      <p>Строки взяты из поисковой выдачи по сайтам банков и с сайтами не сверены. Эффективная ставка посчитана при ежемесячной капитализации <span class="tag t-r">Р</span></p>
+      <div class="tbl wide">
+        <table>
+          <thead><tr><th>Банк / вклад</th><th class="n">Ставка</th><th class="n">Эфф.</th><th>Срок</th><th>Капитализация</th><th>Пополнение</th><th>Досрочно</th></tr></thead>
+          <tbody>
+            <tr><td>Optima «Оптимальный доход»</td><td class="n">до 12,5%</td><td class="n">13,24%</td><td>3–18 мес</td><td>по заявлению</td><td>да, кроме последних 30 дн</td><td>«по отдельной схеме»</td></tr>
+            <tr><td>KICB «Срочный»</td><td class="n">11,5 / 13,5%</td><td class="n">14,37%</td><td>до 36 мес</td><td class="empty">н/д</td><td class="empty">н/д</td><td>проценты не выплачиваются</td></tr>
+            <tr><td>Бакай «Капитал»</td><td class="n">11%</td><td class="n">11,57%</td><td class="empty">н/д</td><td>ежемесячно</td><td>да, кроме последних 60 дн</td><td>проценты сгорают</td></tr>
+            <tr><td>MBank «Срочный-онлайн»</td><td class="n">до 13%</td><td class="n">13,80%</td><td>до 36 мес</td><td class="empty">н/д</td><td class="empty">н/д</td><td class="empty">н/д</td></tr>
+            <tr><td>Компаньон «Накопительный»</td><td class="n">12,5%</td><td class="n">13,24%</td><td>до 3 лет</td><td class="empty">н/д</td><td>да</td><td class="empty">н/д</td></tr>
+            <tr><td>Элдик «Сандык»</td><td class="n">14%</td><td class="n">14,93%</td><td>до 84 мес</td><td>выплата ежемесячно</td><td class="empty">н/д</td><td>возвращается только тело вклада</td></tr>
+            <tr><td>FINCA «Срочный»</td><td class="n">до 14,5%</td><td class="n">до 15,5%</td><td>24–36 мес</td><td>раз в год</td><td class="empty">н/д</td><td class="empty">н/д</td></tr>
+            <tr><td>Керемет «Срочный»</td><td class="n">10,5 / 12%</td><td class="n">12,68%</td><td>24–36 мес</td><td class="empty">н/д</td><td class="empty">н/д</td><td>банк под санкциями OFAC с 01.03.2025</td></tr>
+            <tr><td>Демир «Стандарт»</td><td class="n">7% / «до 13,5%»</td><td class="n empty">—</td><td>до 36 мес</td><td>нет</td><td class="empty">н/д</td><td>источники противоречат</td></tr>
+          </tbody>
+        </table>
+        <caption>Акционные 15–17% (MBank «Новогодний», Дос-Кредобанк, Бай-Тушум) в расчёт не взяты, часть акций уже истекла. Все вклады защищены в пределах 1 млн сом.</caption>
+      </div>
+
+      <h3>Средняя ставка по рынку</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Год</th><th class="n">2018</th><th class="n">2022</th><th class="n">2023</th><th class="n">2024</th><th class="n">2025</th></tr></thead>
+          <tbody><tr><td>Новые срочные сомовые депозиты, НБКР</td><td class="n">10,1%</td><td class="n">≈11,8%</td><td class="n">11,5%</td><td class="n">11,0%</td><td class="n">10,5%</td></tr></tbody>
+        </table>
+      </div>
+      <p class="src"><span class="tag t-d">Д</span> Годовые отчёты НБКР, напр. <a href="https://www.nbkr.kg/DOC/29042025/000000000064447.pdf" target="_blank" rel="noopener">за 2024 год</a> (все вкладчики, не только физлица). Учётная ставка НБКР — 12% с 24.02.2026. <span class="tag t-i">И</span> Реалистичная долгосрочная ставка ≈10–11%, а не 14–15%: даже в 2018 году при учётной 4,75% рынок давал 10,1%.</p>
+
+      <div class="pair">
+        <div>
+          <h3><i style="background:var(--gold)"></i>Агентство по защите депозитов</h3>
+          <ul class="list">
+            <li><strong>1 000 000 сом</strong> на вкладчика в одном банке, <strong>включая проценты</strong>, с 10.06.2023 (закон № 107) <span class="tag t-d">Д</span></li>
+            <li>Физлица и ИП; валютные вклады компенсируются в сомах.</li>
+            <li>Выплата начинается не позже чем через 30 дней.</li>
+            <li>Сверх лимита — очередь кредиторов при ликвидации.</li>
+          </ul>
+          <p class="src"><a href="https://deposit.kg/вопросы-и-ответы" target="_blank" rel="noopener">deposit.kg</a> · <a href="https://24.kg/ekonomika/267562" target="_blank" rel="noopener">24.kg</a></p>
+        </div>
+        <div>
+          <h3><i style="background:var(--interp)"></i>Что из этого следует</h3>
+          <ul class="list">
+            <li>Держать <strong>не больше ≈900 тыс.</strong> в одном банке: нужен запас под начисляемые проценты <span class="tag t-i">И</span></li>
+            <li>20 000 сом в месяц за 30 лет ≈ 41 млн номинально: столько по банкам под гарантию не разложить.</li>
+            <li>От нескольких миллионов логичнее ГКО: риск государства, а не банка.</li>
+            <li>Последние отзывы лицензий — 2015 год («Манас Банк», «Иссык-Куль»), до этого АУБ в 2010 <span class="tag t-d">Д</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="src"><span class="tag t-d">Д</span> Проценты по вкладам в банках КР не облагаются подоходным налогом (ч. 7 ст. 191 НК КР) — пересказ <a href="https://banks.kg/useful-articles/is-interest-bank-deposits-subject-income-tax" target="_blank" rel="noopener">banks.kg</a>; изменения 2025–2026 не проверены.</p>
+    </section>
+
+    <!-- 4 CALC -->
+    <section id="calc" class="col" style="max-width:880px">
+      <div class="sec-head">
+        <div class="eyebrow"><span>04</span> · Этап 4</div>
+        <h2>Калькулятор: ежемесячный взнос под сложный процент</h2>
+      </div>
+      <div class="scen">
+        <div><span class="k">Консервативный</span><span class="v"><span>7%</span><span>7,5%</span></span><p>Инфляция опускается к цели НБКР, ставки падают</p></div>
+        <div class="base"><span class="k">Базовый</span><span class="v"><span>9,5%</span><span>10%</span></span><p>ГНПФ: валовые 11–12% минус комиссия и годы низких ставок. Депозит: средняя по рынку минус перерывы</p></div>
+        <div><span class="k">Оптимистичный</span><span class="v"><span>11,5%</span><span>12,5%</span></span><p>Нынешний уровень ставок держится долго</p></div>
+      </div>
+      <p class="src"><span style="color:var(--accent)">Зелёным</span> — ГНПФ (нетто), <span style="color:var(--gold)">золотым</span> — депозит. <span class="tag t-i">И</span> Депозиту дано на 0,5–1 п.п. больше из-за неизвестной комиссии ГНПФ и 7% в акциях и недвижимости. Это допущение; что будет, если оно неверно, показывает раздел 9.</p>
+
+      <form class="calc" id="calc-form" autocomplete="off">
+        <div class="calc-row">
+          <div class="seg-tabs" role="group" aria-label="Сценарий">
+            <button type="button" data-sc="cons" aria-pressed="false">Консервативный</button>
+            <button type="button" data-sc="base" aria-pressed="true">Базовый</button>
+            <button type="button" data-sc="opt" aria-pressed="false">Оптимистичный</button>
+          </div>
+          <div class="seg-tabs" role="group" aria-label="Показывать">
+            <button type="button" data-view="nom" aria-pressed="true">Номинально</button>
+            <button type="button" data-view="real" aria-pressed="false">В сегодняшних деньгах</button>
+          </div>
+        </div>
+        <div class="calc-grid">
+          <div class="field"><label for="c-monthly">Взнос в месяц, сом</label><input type="number" id="c-monthly" min="0" step="500" value="10000"></div>
+          <div class="field"><label for="c-years">Срок, лет</label><input type="number" id="c-years" min="1" max="45" step="1" value="30"></div>
+          <div class="field g"><label for="c-gnpf">ГНПФ, % годовых</label><input type="number" id="c-gnpf" min="0" max="30" step="0.5" value="9.5"></div>
+          <div class="field y"><label for="c-dep">Депозит, % годовых</label><input type="number" id="c-dep" min="0" max="30" step="0.5" value="10"></div>
+          <div class="field"><label for="c-infl">Инфляция, %</label><input type="number" id="c-infl" min="0" max="30" step="0.5" value="7"></div>
+        </div>
+        <label class="check" for="c-index"><input type="checkbox" id="c-index"> Индексировать взнос на инфляцию каждый год (как растёт зарплата)</label>
+        <div class="out" aria-live="polite">
+          <div><span class="k">Внесено</span><span class="v" id="o-in">—</span><span class="s" id="o-in-s">&nbsp;</span></div>
+          <div class="g"><span class="k">ГНПФ</span><span class="v" id="o-g">—</span><span class="s" id="o-g-s">&nbsp;</span></div>
+          <div class="y"><span class="k">Депозит</span><span class="v" id="o-y">—</span><span class="s" id="o-y-s">&nbsp;</span></div>
+          <div><span class="k">Разница</span><span class="v" id="o-d">—</span><span class="s" id="o-d-s">&nbsp;</span></div>
+        </div>
+        <svg class="chart" id="chart" viewBox="0 0 720 300" role="img" aria-label="Рост капитала по годам"></svg>
+        <div class="chart-legend">
+          <span><i style="border-color:var(--accent)"></i>ГНПФ</span>
+          <span><i style="border-color:var(--gold)"></i>Депозит</span>
+          <span><i style="border-color:var(--muted);border-top-style:dashed"></i>Внесено своих денег</span>
+          <span>По горизонтали — годы</span>
+        </div>
+        <p class="src">Взнос в конце месяца, ставки годовые эффективные, налога нет. «В сегодняшних деньгах» — итог, делённый на (1 + инфляция)<sup>лет</sup>. Это модель с постоянной ставкой, а не прогноз.</p>
+      </form>
+
+      <h3>Базовый сценарий целиком</h3>
+      <div class="tbl wide">
+        <table>
+          <thead><tr><th class="n">Взнос/мес</th><th class="n">Лет</th><th class="n">Внесено</th><th class="n">ГНПФ 9,5%</th><th class="n">Депозит 10%</th><th class="n">Разница</th><th class="n">ГНПФ, сегодн.</th><th class="n">Депозит, сегодн.</th></tr></thead>
+          <tbody id="t-base"></tbody>
+        </table>
+        <caption>Расчёт <span class="tag t-r">Р</span>. «Сегодн.» — в сегодняшних деньгах при инфляции 7%. Фиксированный взнос 10 000 сом через 30 лет стоит лишь ≈1 300 сегодняшних сом.</caption>
+      </div>
+
+      <h3>Консервативный и оптимистичный, взнос 10 000 в месяц</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th class="n">Лет</th><th class="n">ГНПФ 7%</th><th class="n">Депозит 7,5%</th><th class="n">ГНПФ 11,5%</th><th class="n">Депозит 12,5%</th></tr></thead>
+          <tbody>
+            <tr><td class="n">10</td><td class="n g">1 710 517</td><td class="n y">1 755 245</td><td class="n g">2 161 815</td><td class="n y">2 278 403</td></tr>
+            <tr><td class="n">20</td><td class="n g">5 075 364</td><td class="n y">5 372 861</td><td class="n g">8 582 289</td><td class="n y">9 677 108</td></tr>
+            <tr><td class="n">30</td><td class="n g">11 694 526</td><td class="n y">12 828 882</td><td class="n g">27 650 758</td><td class="n y">33 703 081</td></tr>
+          </tbody>
+        </table>
+        <caption>Для других сумм результат пропорционален: 2 000 — ×0,2; 5 000 — ×0,5; 20 000 — ×2. В консервативном сценарии реальная доходность обоих вариантов около нуля.</caption>
+      </div>
+    </section>
+
+    <!-- 5 SALARY -->
+    <section id="salary" class="col" style="max-width:880px">
+      <div class="sec-head">
+        <div class="eyebrow"><span>05</span> · Этап 5</div>
+        <h2>Зарплата → взносы → накопления</h2>
+      </div>
+      <p>Зарплата растёт вместе с инфляцией 7%, все суммы в сегодняшних сомах, базовый сценарий. Слева реальность, справа то, чего закон не позволяет.</p>
+      <div class="note warn">
+        <strong>Заштрихованные столбцы юридически невозможны</strong>
+        <p>От 8% солидарной части отказаться нельзя, доля работодателя вам не принадлежит. Они показаны только для понимания масштаба.</p>
+      </div>
+      <div class="tbl wide">
+        <table>
+          <thead><tr><th class="n">Зарплата</th><th class="n">Лет</th><th class="n">2% в ГНПФ/мес</th><th class="n">ГНПФ 9,5%</th><th class="n">Те же 2% на депозит</th><th class="n hyp">10% на депозит</th><th class="n hyp">12,25%</th><th class="n hyp">27,25%</th></tr></thead>
+          <tbody id="t-sal"></tbody>
+        </table>
+        <caption>Расчёт <span class="tag t-r">Р</span>, сегодняшние сомы.</caption>
+      </div>
+      <div class="pair">
+        <div>
+          <h3>Почему гипотетика некорректна <span class="tag t-i">И</span></h3>
+          <p>Солидарная часть даёт то, чего депозит не даёт: <strong>пожизненную</strong> пенсию, которая не закончится и в 95 лет, индексацию (×1,20 с 01.10.2026), базовую часть 3 170 сом, выплаты по инвалидности и по потере кормильца. Рынка пожизненных аннуитетов в КР не найдено. Цена этой защиты — риск законодательства и демографии.</p>
+        </div>
+        <div>
+          <h3>Во что превращаются накопления <span class="tag t-r">Р</span></h3>
+          <p>1 млн сегодняшних сом при реальной доходности 2% дают ≈ <strong class="num">6 400 сом/мес</strong> в течение 15 лет. При зарплате 100 000 сом и 30 годах взносов накопительная часть добавит примерно столько к солидарной пенсии. Срок и форма выплаты ГНПФ не проверены.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 RISKS -->
+    <section id="risks" class="col" style="max-width:880px">
+      <div class="sec-head">
+        <div class="eyebrow"><span>06</span> · Этап 6</div>
+        <h2>Риски, которых не видно в процентах</h2>
+      </div>
+      <div class="tbl wide">
+        <table>
+          <thead><tr><th>Критерий</th><th style="color:var(--accent)">Соцфонд / ГНПФ (2%)</th><th style="color:var(--gold)">Сомовый депозит / ГКО</th></tr></thead>
+          <tbody>
+            <tr><td>Номинальная доходность</td><td>Валовая ≈11–12% (2025) <span class="tag t-r">Р</span>; зачисленная на счёт неизвестна</td><td>Депозит 10–14% сейчас, долгосрочно ≈10–11% <span class="tag t-i">И</span>; ГКО 12–16% <span class="tag t-d">Д</span></td></tr>
+            <tr><td>Реальная доходность</td><td>≈ +2% (2025), ≈ −1% (2026)</td><td>≈0…+3% при инфляции 9–12%</td></tr>
+            <tr><td>Защита от инфляции</td><td>Нет, только через ставки</td><td>Нет, только через ставки</td></tr>
+            <tr><td>Гарантии</td><td>Гарантии доходности не найдено</td><td>1 млн сом на банк; ГКО — обязательство государства</td></tr>
+            <tr><td>Риск потери</td><td>Частично политические инвестиции (ТЦ «Ала-Арча», 7% в акциях)</td><td>Банкротство банка сверх 1 млн; последний случай — 2015</td></tr>
+            <tr><td>Ликвидность</td><td>Только ипотека, лечение, выезд, безработица</td><td>Высокая, но при досрочном снятии часто сгорают проценты</td></tr>
+            <tr><td>Наследование</td><td>Да (порядок не проверен)</td><td>Да, по общим правилам <span class="tag t-i">И</span></td></tr>
+            <tr><td>Валютный риск</td><td>100% в сомах</td><td>По умолчанию сом, можно диверсифицировать</td></tr>
+            <tr><td>Законы</td><td><strong>Высокий:</strong> тарифы и правила менялись в 2024–2026</td><td>Ниже, но лимит защиты и налоги тоже задаются законом</td></tr>
+            <tr><td>Изменение ставок</td><td>Смягчено: длинные облигации под 15–16% <span class="tag t-i">И</span></td><td><strong>Высокий:</strong> перевложение каждые 1–3 года</td></tr>
+            <tr><td>Дисциплина</td><td>Автоматическая</td><td>Зависит от вас, решается автопереводом</td></tr>
+            <tr><td>Гибкость</td><td>Минимальная</td><td>Максимальная</td></tr>
+            <tr><td>Налоги</td><td class="empty">Не проверено</td><td>Проценты по вкладам не облагаются <span class="tag t-d">Д</span>; по ГКО не проверено</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pair">
+        <div>
+          <h3>Почему не «30 лет под 15–17%»</h3>
+          <ul class="list">
+            <li>Это ставки при инфляции 12% и учётной ставке 12%. При инфляции 5–7% ставки упадут.</li>
+            <li>Депозит перевкладывается 10–20 раз за 30 лет по ставкам, которые сегодня неизвестны.</li>
+            <li>15% при инфляции 12% — это лишь ≈2,7% реальных.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Сом и доллар <span class="tag t-r">Р</span><span class="tag t-i">И</span></h3>
+          <ul class="list">
+            <li>Сом ослабевал к USD на ≈3,4% в год с конца 2014 года (курсы не сверены с НБКР).</li>
+            <li>USD-вклад 1–3% плюс девальвация ≈ 5,6% в год в сомах. Это меньше сомового депозита.</li>
+            <li>Девальвация идёт рывками: 2015 год +29%, 2022 год 79,5 → почти 105. Валютная доля — страховка, а не доходность.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 STRATEGY -->
+    <section id="strategy" class="col">
+      <div class="sec-head">
+        <div class="eyebrow"><span>07</span> · Этап 7</div>
+        <h2>Комбинированная стратегия</h2>
+      </div>
+      <p><strong>Обязательные взносы</strong> — без вариантов. Переводить 2% в частный НПФ имеет смысл только после того, как фонд опубликует историю доходности и комиссию; сейчас их нет.</p>
+      <p><strong>Личный капитал при умеренном риске</strong> <span class="tag t-i">И</span></p>
+      <div class="alloc" role="img" aria-label="Депозиты 55%, ГКО 30%, доллар или золото 15%">
+        <div style="flex:55;background:var(--gold)">Депозиты 50–60%</div>
+        <div style="flex:30;background:var(--accent)">ГКО 25–35%</div>
+        <div style="flex:15;background:var(--interp)">USD/золото</div>
+      </div>
+      <ul class="list">
+        <li><strong>Депозиты</strong> в 3–5 банках, не больше ≈900 тыс. сом в одном, с капитализацией и автопополнением, сроки 12–36 месяцев.</li>
+        <li><strong>Лестница ГКО на 2–5 лет.</strong> ГКО-2 сейчас 13% (аукцион 18.09.2026) <span class="tag t-d">Д</span>; номинал 100 сом, купить можно через банки, Кыргызскую фондовую биржу или MegaPay. Это тот же портфель, что у ГНПФ, только без его комиссии, с наследованием и правом продать. Вторичный рынок, вероятно, неликвиден.</li>
+        <li><strong>Доллар или мерные слитки НБКР</strong> как страховка от девальвации. Разница цен покупки и продажи слитков ≈5,6% <span class="tag t-d">Д</span>, процентов они не приносят.</li>
+      </ul>
+      <div class="note plain"><p><strong>Высокорисковые инструменты</strong> (акции, крипта, частные займы) пенсию не заменяют. Если вкладываться в них, то сверх основы и только на сумму, которую не жалко потерять.</p></div>
+    </section>
+
+    <!-- 8 VERDICT -->
+    <section id="verdict" class="col">
+      <div class="sec-head">
+        <div class="eyebrow"><span>08</span> · Итог</div>
+        <h2>Итоговый вывод</h2>
+      </div>
+      <div class="verdict">
+        <div><span class="q">Что вы обязаны</span><span>Платить 10% зарплаты: 8% в солидарную часть + 2% в ГНПФ. Работодатель платит отдельно, обычно 2,25% <span class="tag t-d">Д</span></span></div>
+        <div><span class="q">Где есть выбор</span><span>2% — оставить в ГНПФ или перевести в частный НПФ. Всё, что сверх обязательного, — целиком ваше решение. Доплатить в ГНПФ резиденту, судя по всему, нельзя; мигранты могут платить добровольно.</span></div>
+        <div><span class="q">Исторически</span><span>Сравнить невозможно: доходность счетов ГНПФ не публикуется. По косвенным данным в 2024–2025 оба варианта давали сопоставимые ≈11–12% валовых <span class="tag t-r">Р</span><span class="tag t-i">И</span></span></div>
+        <div><span class="q">10 лет</span><span>1 п.п. разницы — около 5% итога. Выбирать стоит по ликвидности: в пользу депозитов и ГКО.</span></div>
+        <div><span class="q">20 лет</span><span>1 п.п. — около 12,5%. Длинные облигации ГНПФ под 15–16% могут выиграть, если ставки упадут.</span></div>
+        <div><span class="q">30 лет</span><span>1 п.п. — около 21%. Главными становятся риск изменения законов (ГНПФ) и лимит защиты (депозиты), а не ставка.</span></div>
+        <div><span class="q">Риски</span><span>ГНПФ: законы, непрозрачность, политические инвестиции, неликвидность. Депозит: перевложение по падающим ставкам, банкротство сверх 1 млн, сгорающие проценты, ваша собственная дисциплина.</span></div>
+        <div><span class="q">При умеренном риске</span><span><strong>Обязательный минимум — в системе, дополнительные деньги — самостоятельно:</strong> депозиты в нескольких банках, ГКО и небольшая валютная доля <span class="tag t-i">И</span>. Это не гарантия результата.</span></div>
+      </div>
+      <div class="pair">
+        <div><h3><i style="background:var(--accent)"></i>ГНПФ выигрывает, если</h3><p>ставки по депозитам упадут, а длинные облигации ГНПФ продолжат приносить 15–16%, и при этом комиссия ГНПФ невелика.</p></div>
+        <div><h3><i style="background:var(--gold)"></i>Депозит и ГКО выигрывают, если</h3><p>комиссия и непрофильные вложения ГНПФ съедают больше 0,5–1 п.п., или вам нужны ликвидность и полное наследование.</p></div>
+      </div>
+    </section>
+
+    <!-- 9 BREAK-EVEN -->
+    <section id="breakeven" class="col">
+      <div class="sec-head">
+        <div class="eyebrow"><span>09</span> · Sensitivity</div>
+        <h2>При какой ставке депозит догоняет ГНПФ</h2>
+      </div>
+      <p>Без потерь на перевложение депозит должен давать ту же эффективную ставку, что и ГНПФ. Из-за капитализации номинальная ставка может быть чуть ниже <span class="tag t-r">Р</span></p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th class="n">ГНПФ, X</th><th class="n">Номинал депозита с ежемес. капитализацией</th><th class="n">С 1 месяцем простоя в год</th></tr></thead>
+          <tbody>
+            <tr><td class="n">7%</td><td class="n">6,78%</td><td class="n">≈7,7%</td></tr>
+            <tr><td class="n">9%</td><td class="n">8,65%</td><td class="n">≈9,9%</td></tr>
+            <tr><td class="n">9,5%</td><td class="n">9,11%</td><td class="n">≈10,4%</td></tr>
+            <tr><td class="n">10%</td><td class="n">9,57%</td><td class="n">≈11,0%</td></tr>
+            <tr><td class="n">11,5%</td><td class="n">10,93%</td><td class="n">≈12,6%</td></tr>
+            <tr><td class="n">12%</td><td class="n">11,39%</td><td class="n">≈13,2%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Номинальная ставка</th><th class="n">Инфляция 5%</th><th class="n">7%</th><th class="n">9%</th></tr></thead>
+          <tbody>
+            <tr><td>9,5%</td><td class="n">4,3%</td><td class="n">2,3%</td><td class="n">0,5%</td></tr>
+            <tr><td>10%</td><td class="n">4,8%</td><td class="n">2,8%</td><td class="n">0,9%</td></tr>
+            <tr><td>12,5%</td><td class="n">7,1%</td><td class="n">5,1%</td><td class="n">3,2%</td></tr>
+          </tbody>
+        </table>
+        <caption>Реальная доходность при разной инфляции <span class="tag t-r">Р</span></caption>
+      </div>
+      <div class="note info">
+        <p><strong>Цена 1 п.п. разницы:</strong> +5,4% к итогу за 10 лет, +12,5% за 20 лет, +21% за 30 лет.</p>
+        <p><strong>Правило:</strong> если ГНПФ в среднем зачисляет X% на счёт, депозит должен давать минимум <strong>X + ≈1 п.п.</strong> номинально (налога на проценты нет), чтобы стабильно выигрывать с учётом простоев и риска досрочного снятия.</p>
+      </div>
+    </section>
+
+    <!-- 10 QC -->
+    <section id="quality" class="col">
+      <div class="sec-head">
+        <div class="eyebrow"><span>10</span> · Проверка</div>
+        <h2>Контроль качества и что осталось открытым</h2>
+      </div>
+      <ul class="qc">
+        <li class="ok"><span>Обязательная, страховая и накопительная части разделены</span></li>
+        <li class="ok"><span>Юридически невозможные сценарии помечены (раздел 5)</span></li>
+        <li class="no"><span>Ставки не проверены по официальным сайтам: домены .kg были недоступны, использована поисковая выдача</span></li>
+        <li class="ok"><span>Инфляция учтена: база 7%, сценарии 5 / 7 / 9%</span></li>
+        <li class="ok"><span>Сложный процент и ежемесячная капитализация</span></li>
+        <li class="ok"><span>Защита депозитов учтена</span></li>
+        <li class="ok"><span>Номинальная и реальная доходность разделены</span></li>
+        <li class="ok"><span>Сегодняшние ставки не растянуты на 30 лет</span></li>
+        <li class="part"><span>Даты указаны частично: у многих источников даты нет</span></li>
+        <li class="no"><span>Фактическая доходность счетов ГНПФ не найдена</span></li>
+      </ul>
+      <details>
+        <summary>Противоречия в источниках</summary>
+        <div><p>Минимальный стаж 5 или 6 лет — взят 6 (economist.kg, более свежий). Демир Банк 7% или «до 13,5%» — в расчёт не включён. Даты аукционов ГКО-5 и ГКО-10 ненадёжны.</p></div>
+      </details>
+      <details>
+        <summary>Не найдено или не проверено</summary>
+        <div><p>Доходность на счетах ГНПФ; комиссия ГНПФ; срок выплаты накопительной части; формула страховой части за стаж после 1996 года; налог на доход по ГКО; возможность добровольной доплаты в ГНПФ; среднегодовая инфляция; официальные курсы НБКР; доходность частных НПФ.</p></div>
+      </details>
+      <details>
+        <summary>Как проверить самостоятельно</summary>
+        <div><p>Откройте <a href="https://sf.gov.kg/ru/gnpf/" target="_blank" rel="noopener">sf.gov.kg/ru/gnpf</a>, раздел «Отчёты», и найдите «доходность, начисленная на счета» по годам. Это главный недостающий параметр. Остаток на своём счёте ГНПФ виден в личном кабинете Соцфонда.</p></div>
+      </details>
+      <div class="confidence">
+        <div class="big">≈50%</div>
+        <div>
+          <strong>Уверенность в выводах</strong>
+          <p class="src">Структура выводов ≈75%: обязательность взносов, деление 8% + 2%, механика сложного процента, лимит 1 млн. Конкретные доходности ≈30–40%: ставка на счетах ГНПФ не найдена, сценарии — оценка, ставки банков без сверки с сайтами.</p>
+          <div class="meter"><i></i></div>
+        </div>
+      </div>
+      <footer class="end">
+        <span>Данные собраны 05.10.2026. Это аналитический материал, а не индивидуальная инвестиционная рекомендация.</span>
+        <span>Метки: <span class="tag t-d">Д</span> данные · <span class="tag t-r">Р</span> расчёт · <span class="tag t-i">И</span> интерпретация.</span>
+      </footer>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  var fmt = function (n) { return Math.round(n).toLocaleString("ru-RU").replace(/,/g, " "); };
+  var short = function (n) {
+    var a = Math.abs(n);
+    if (a >= 1e9) return (n / 1e9).toFixed(1).replace(".", ",") + " млрд";
+    if (a >= 1e6) return (n / 1e6).toFixed(a >= 1e7 ? 1 : 2).replace(".", ",") + " млн";
+    if (a >= 1e3) return Math.round(n / 1e3) + " тыс.";
+    return String(Math.round(n));
+  };
+
+  // Monthly contribution at the end of each month, annual effective rate r,
+  // contribution indexed yearly by idx. Returns balances at the end of each year.
+  function series(pm, r, years, idx) {
+    var m = Math.pow(1 + r, 1 / 12) - 1, bal = 0, out = [0], paid = 0, paidArr = [0];
+    for (var y = 0; y < years; y++) {
+      var c = pm * Math.pow(1 + idx, y);
+      for (var k = 0; k < 12; k++) { bal = bal * (1 + m) + c; paid += c; }
+      out.push(bal); paidArr.push(paid);
+    }
+    return { bal: out, paid: paidArr };
+  }
+
+  /* ---------- salary flow ---------- */
+  var salBtns = document.querySelectorAll("[data-sal]");
+  function setSal(s) {
+    document.getElementById("flow-salary").textContent = fmt(s);
+    document.getElementById("f-sol").textContent = fmt(s * 0.08);
+    document.getElementById("f-gnpf").textContent = fmt(s * 0.02);
+    document.getElementById("f-emp").textContent = fmt(s * 0.0225);
+    salBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(+b.dataset.sal === s)); });
+  }
+  salBtns.forEach(function (b) { b.addEventListener("click", function () { setSal(+b.dataset.sal); }); });
+
+  /* ---------- static tables (computed with the same formula) ---------- */
+  var INF = 0.07;
+  var tb = document.getElementById("t-base"), rows = "";
+  [2000, 5000, 10000, 20000].forEach(function (pm, i) {
+    [10, 20, 30].forEach(function (yrs, j) {
+      var a = series(pm, 0.095, yrs, 0).bal[yrs], b = series(pm, 0.10, yrs, 0).bal[yrs], d = Math.pow(1 + INF, yrs);
+      rows += "<tr" + (j === 0 && i > 0 ? ' style="border-top:2px solid var(--line)"' : "") + ">" +
+        "<td class='n'>" + (j === 0 ? fmt(pm) : "") + "</td><td class='n'>" + yrs + "</td><td class='n'>" + fmt(pm * 12 * yrs) +
+        "</td><td class='n g'>" + fmt(a) + "</td><td class='n y'>" + fmt(b) + "</td><td class='n'>+" + fmt(b - a) +
+        "</td><td class='n g'>" + fmt(a / d) + "</td><td class='n y'>" + fmt(b / d) + "</td></tr>";
+    });
+  });
+  tb.innerHTML = rows;
+
+  var ts = document.getElementById("t-sal"); rows = "";
+  [30000, 50000, 100000, 200000].forEach(function (X, i) {
+    [10, 20, 30].forEach(function (yrs, j) {
+      var d = Math.pow(1 + INF, yrs);
+      var v = function (share, r) { return series(X * share, r, yrs, INF).bal[yrs] / d; };
+      rows += "<tr" + (j === 0 && i > 0 ? ' style="border-top:2px solid var(--line)"' : "") + ">" +
+        "<td class='n'>" + (j === 0 ? fmt(X) : "") + "</td><td class='n'>" + yrs + "</td><td class='n'>" + fmt(X * 0.02) +
+        "</td><td class='n g'>" + fmt(v(0.02, 0.095)) + "</td><td class='n y'>" + fmt(v(0.02, 0.10)) +
+        "</td><td class='n hyp'>" + fmt(v(0.10, 0.10)) + "</td><td class='n hyp'>" + fmt(v(0.1225, 0.10)) +
+        "</td><td class='n hyp'>" + fmt(v(0.2725, 0.10)) + "</td></tr>";
+    });
+  });
+  ts.innerHTML = rows;
+
+  /* ---------- calculator ---------- */
+  var SC = { cons: [7, 7.5], base: [9.5, 10], opt: [11.5, 12.5] };
+  var view = "nom";
+  var $ = function (id) { return document.getElementById(id); };
+  var num = function (id, def) { var v = parseFloat($(id).value); return isFinite(v) ? v : def; };
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  function niceStep(max) {
+    var raw = max / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+    return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
+  }
+
+  function draw(g, y, paid, years) {
+    var svg = $("chart"); while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var W = 720, H = 300, L = 64, R = 16, T = 14, B = 30;
+    var max = Math.max(g[years], y[years], paid[years], 1);
+    var step = niceStep(max), top = Math.ceil(max / step) * step;
+    var sx = function (i) { return L + (W - L - R) * i / years; };
+    var sy = function (v) { return T + (H - T - B) * (1 - v / top); };
+    for (var t = 0; t <= top + 1e-9; t += step) {
+      svg.appendChild(el("line", { x1: L, x2: W - R, y1: sy(t), y2: sy(t), class: "grid" }));
+      var lab = el("text", { x: L - 8, y: sy(t) + 4, "text-anchor": "end" }); lab.textContent = short(t); svg.appendChild(lab);
+    }
+    var xStep = years <= 10 ? 1 : years <= 20 ? 2 : 5;
+    for (var i = 0; i <= years; i += xStep) {
+      var tx = el("text", { x: sx(i), y: H - 8, "text-anchor": "middle" }); tx.textContent = i; svg.appendChild(tx);
+    }
+    var path = function (arr) { return arr.map(function (v, i) { return (i ? "L" : "M") + sx(i).toFixed(1) + " " + sy(v).toFixed(1); }).join(" "); };
+    var area = path(y) + " L" + sx(years) + " " + sy(0) + " L" + sx(0) + " " + sy(0) + " Z";
+    svg.appendChild(el("path", { d: area, class: "a-y" }));
+    svg.appendChild(el("path", { d: path(paid), class: "l-c" }));
+    svg.appendChild(el("path", { d: path(g), class: "l-g" }));
+    svg.appendChild(el("path", { d: path(y), class: "l-y" }));
+    svg.appendChild(el("circle", { cx: sx(years), cy: sy(g[years]), r: 4, class: "dot-g" }));
+    svg.appendChild(el("circle", { cx: sx(years), cy: sy(y[years]), r: 4, class: "dot-y" }));
+  }
+
+  function calc() {
+    var pm = Math.max(0, num("c-monthly", 0));
+    var years = Math.min(45, Math.max(1, Math.round(num("c-years", 30))));
+    var rg = num("c-gnpf", 9.5) / 100, ry = num("c-dep", 10) / 100, inf = num("c-infl", 7) / 100;
+    var idx = $("c-index").checked ? inf : 0;
+    var A = series(pm, rg, years, idx), B = series(pm, ry, years, idx);
+    var defl = function (arr) { return arr.map(function (v, i) { return view === "real" ? v / Math.pow(1 + inf, i) : v; }); };
+    var g = defl(A.bal), y = defl(B.bal), paid = defl(A.paid);
+    var unit = view === "real" ? "сегодняшних сом" : "сом";
+    $("o-in").textContent = short(paid[years]); $("o-in-s").textContent = fmt(paid[years]) + " " + unit;
+    $("o-g").textContent = short(g[years]); $("o-g-s").textContent = "×" + (g[years] / (paid[years] || 1)).toFixed(2).replace(".", ",") + " к внесённому";
+    $("o-y").textContent = short(y[years]); $("o-y-s").textContent = "×" + (y[years] / (paid[years] || 1)).toFixed(2).replace(".", ",") + " к внесённому";
+    var diff = y[years] - g[years];
+    $("o-d").textContent = (diff >= 0 ? "+" : "−") + short(Math.abs(diff));
+    $("o-d-s").textContent = (diff >= 0 ? "в пользу депозита" : "в пользу ГНПФ") + ", " + (g[years] ? Math.abs(diff / g[years] * 100).toFixed(1).replace(".", ",") : "0") + "%";
+    draw(g, y, paid, years);
+  }
+
+  document.querySelectorAll("[data-sc]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var s = SC[b.dataset.sc]; $("c-gnpf").value = s[0]; $("c-dep").value = s[1];
+      document.querySelectorAll("[data-sc]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      calc();
+    });
+  });
+  document.querySelectorAll("[data-view]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      view = b.dataset.view;
+      document.querySelectorAll("[data-view]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      calc();
+    });
+  });
+  ["c-monthly", "c-years", "c-gnpf", "c-dep", "c-infl", "c-index"].forEach(function (id) {
+    $(id).addEventListener("input", function () {
+      if (id === "c-gnpf" || id === "c-dep") document.querySelectorAll("[data-sc]").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      calc();
+    });
+  });
+  $("calc-form").addEventListener("submit", function (e) { e.preventDefault(); });
+  calc();
+})();
+</script>
+</body>
+</html>
